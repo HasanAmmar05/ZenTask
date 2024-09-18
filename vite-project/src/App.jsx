@@ -52,11 +52,9 @@ export default function App() {
   };
 
   // Handle new item submission
-  // Inside the handleSubmit function
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Check if the new item and category are selected
     if (!newItem.trim() || !selectedCategory) {
       alert("Please enter a new item and select a category.");
       return;
@@ -69,16 +67,15 @@ export default function App() {
         name: newItem,
         isCompleted: false,
         category: selectedCategory,
-        dueDate: dueDate || "No due date", // Handle empty due date
+        dueDate: dueDate || "No due date",
         priority: priority,
         tags: tags
           .split(",")
           .map((tag) => tag.trim())
-          .filter(Boolean), // Ensure no empty tags
+          .filter(Boolean),
       },
     ]);
 
-    // Reset form fields
     setNewItem("");
     setDueDate("");
     setSelectedCategory("");
@@ -132,32 +129,35 @@ export default function App() {
   };
 
   return (
-    <>
-      <form className="new-item-form" onSubmit={handleSubmit}>
-        <div className="form-row">
-          <label htmlFor="item">New Item</label>
+    <div className={`min-h-screen bg-gray-100 ${theme === "dark" ? "bg-gray-900 text-gray-200" : "text-gray-900"} p-8`}>
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <div className="form-row flex flex-col">
+          <label htmlFor="item" className="text-lg font-semibold mb-1">New Item</label>
           <input
             value={newItem}
             onChange={(e) => setNewItem(e.target.value)}
             id="item"
+            className="p-2 rounded-md border border-gray-300 shadow-sm"
           />
         </div>
-        <div className="form-row">
-          <label htmlFor="dueDate">Due Date</label>
+        <div className="form-row flex flex-col">
+          <label htmlFor="dueDate" className="text-lg font-semibold mb-1">Due Date</label>
           <input
             type="date"
             id="dueDate"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
             min={getTodayString()}
+            className="p-2 rounded-md border border-gray-300 shadow-sm"
           />
         </div>
-        <div className="form-row">
-          <label htmlFor="category">Category</label>
+        <div className="form-row flex flex-col">
+          <label htmlFor="category" className="text-lg font-semibold mb-1">Category</label>
           <select
             id="category"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
+            className="p-2 rounded-md border border-gray-300 shadow-sm"
           >
             <option value="">Select a category</option>
             {categories.map((category, index) => (
@@ -167,99 +167,102 @@ export default function App() {
             ))}
           </select>
         </div>
-        <div className="form-row">
-          <label htmlFor="priority">Priority</label>
+        <div className="form-row flex flex-col">
+          <label htmlFor="priority" className="text-lg font-semibold mb-1">Priority</label>
           <select
             id="priority"
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
+            className="p-2 rounded-md border border-gray-300 shadow-sm"
           >
             <option value="Low">Low</option>
             <option value="Medium">Medium</option>
             <option value="High">High</option>
           </select>
         </div>
-        <div className="form-row">
-          <label htmlFor="tags">Tags (comma-separated)</label>
+        <div className="form-row flex flex-col">
+          <label htmlFor="tags" className="text-lg font-semibold mb-1">Tags (comma-separated)</label>
           <input
             type="text"
             id="tags"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
+            className="p-2 rounded-md border border-gray-300 shadow-sm"
           />
         </div>
-        <button className="btn" type="submit" disabled={!newItem.trim()}>
+        <button
+          className="mt-4 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+          type="submit"
+          disabled={!newItem.trim()}
+        >
           Add
         </button>
       </form>
 
-      <div>
-        <label htmlFor="filter">Filter by category: </label>
-        <select
-          id="filter"
-          value={currentFilter}
-          onChange={(e) => setCurrentFilter(e.target.value)}
-        >
-          <option value="All">All</option>
-          {categories.map((category, index) => (
-            <option key={index} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
+      <div className="mt-8 space-y-4">
+        <div className="flex items-center space-x-4">
+          <label htmlFor="filter" className="font-semibold">Filter by category: </label>
+          <select
+            id="filter"
+            value={currentFilter}
+            onChange={(e) => setCurrentFilter(e.target.value)}
+            className="p-2 rounded-md border border-gray-300 shadow-sm"
+          >
+            <option value="All">All</option>
+            {categories.map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
+        <input
+          type="text"
+          placeholder="Search tasks..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="p-2 rounded-md border border-gray-300 shadow-sm w-full"
+        />
       </div>
 
-      <input
-        type="text"
-        placeholder="Search tasks..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-
-      <div className="list-header">
-        <h1 className="header">TO-DO List</h1>
-        <button className="btn btn-secondary" onClick={sortByDueDate}>
-          Sort by Due Date
-        </button>
-        <button className="btn btn-secondary" onClick={archiveCompleted}>
-          Archive Completed Tasks
-        </button>
-        <button className="btn btn-secondary" onClick={toggleTheme}>
-          Toggle {theme === "light" ? "Dark" : "Light"} Mode
-        </button>
+      <div className="list-header mt-8 flex items-center justify-between">
+        <h1 className="text-2xl font-bold">TO-DO List</h1>
+        <div className="space-x-2">
+          <button className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition" onClick={sortByDueDate}>
+            Sort by Due Date
+          </button>
+          <button className="p-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition" onClick={archiveCompleted}>
+            Archive Completed Tasks
+          </button>
+          <button className="p-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition" onClick={toggleTheme}>
+            Toggle {theme === "light" ? "Dark" : "Light"} Mode
+          </button>
+        </div>
       </div>
 
-      <ul className="list">
+      <ul className="list mt-4 space-y-2">
         {filteredItems
           .filter((item) =>
             item.name.toLowerCase().includes(searchQuery.toLowerCase())
           )
           .map((item) => (
-            <li key={item.id}>
-              <label>
+            <li key={item.id} className="flex items-center justify-between p-2 border border-gray-200 rounded-md bg-white shadow-sm">
+              <label className="flex items-center space-x-2">
                 <input
                   type="checkbox"
                   onChange={() => toggleComplete(item.id)}
                   checked={item.isCompleted}
+                  className="form-checkbox"
                 />
                 <span
-                  style={{
-                    textDecoration: item.isCompleted ? "line-through" : "none",
-                    color: isOverdue(item.dueDate) ? "red" : "inherit",
-                  }}
+                  className={`${item.isCompleted ? "line-through text-gray-500" : ""} ${isOverdue(item.dueDate) ? "text-red-500" : ""}`}
                 >
-                  {item.name} - Category: {item.category} - Due:{" "}
-                  {item.dueDate || "No due date"}- Priority: {item.priority} -
-                  Tags: {(item.tags || []).join(", ")}
+                  {item.name} - Category: {item.category} - Due: {item.dueDate || "No due date"} - Priority: {item.priority} - Tags: {(item.tags || []).join(", ")}
                 </span>
               </label>
               <button
-                className="btn btn-danger"
-                onClick={() => {
-                  setItems((prevItems) =>
-                    prevItems.filter((a) => a.id !== item.id)
-                  );
-                }}
+                className="p-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                onClick={() => setItems((prevItems) => prevItems.filter((a) => a.id !== item.id))}
               >
                 Delete
               </button>
@@ -267,16 +270,14 @@ export default function App() {
           ))}
       </ul>
 
-      <h2>Archived Tasks</h2>
-      <ul>
+      <h2 className="mt-8 text-xl font-bold">Archived Tasks</h2>
+      <ul className="space-y-2">
         {archivedItems.map((item) => (
-          <li key={item.id}>
-            <span>
-              {item.name} - Category: {item.category} - Due: {item.dueDate}
-            </span>
+          <li key={item.id} className="p-2 bg-gray-200 rounded-md">
+            {item.name} - Category: {item.category} - Due: {item.dueDate}
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }
