@@ -6,6 +6,8 @@ let nextId = 0;
 export default function App() {
   const [newItem, setNewItem] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [priority, setPriority] = useState('Low');  // Priority feature
+  const [tags, setTags] = useState('');  // Tags feature
   const [items, setItems] = useState(() => {
     const savedItems = localStorage.getItem('items');
     if (savedItems) {
@@ -22,6 +24,9 @@ export default function App() {
   });
   const [selectedCategory, setSelectedCategory] = useState('');
   const [currentFilter, setCurrentFilter] = useState('All');
+  const [searchQuery, setSearchQuery] = useState("");  // Search functionality
+  const [archivedItems, setArchivedItems] = useState([]);  // Archive feature
+  const [theme, setTheme] = useState('light');  // Dark/Light mode feature
 
   // Persist items and categories in localStorage
   useEffect(() => {
@@ -31,6 +36,10 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('categories', JSON.stringify(categories));
   }, [categories]);
+
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
 
   // Toggle completion status
   const toggleComplete = (id) => {
@@ -54,13 +63,17 @@ export default function App() {
         name: newItem,
         isCompleted: false,
         category: selectedCategory,
-        dueDate: dueDate
+        dueDate: dueDate,
+        priority: priority,
+        tags: tags.split(',').map(tag => tag.trim()),  // Handling multiple tags
       }
     ]);
 
     setNewItem("");
     setDueDate("");
     setSelectedCategory("");
+    setPriority('Low');
+    setTags('');
   };
 
   // Sort items by due date
@@ -89,6 +102,17 @@ export default function App() {
     if (newCategory.trim() && !categories.includes(newCategory)) {
       setCategories([...categories, newCategory]);
     }
+  };
+
+  // Archive completed tasks
+  const archiveCompleted = () => {
+    setArchivedItems([...archivedItems, ...items.filter(item => item.isCompleted)]);
+    setItems(items.filter(item => !item.isCompleted));
+  };
+
+  // Dark/Light theme toggle
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
   return (
@@ -127,6 +151,27 @@ export default function App() {
             ))}
           </select>
         </div>
+        <div className="form-row">
+          <label htmlFor="priority">Priority</label>
+          <select
+            id="priority"
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+          >
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+        <div className="form-row">
+          <label htmlFor="tags">Tags (comma-separated)</label>
+          <input
+            type="text"
+            id="tags"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+          />
+        </div>
         <button className="btn" type="submit" disabled={!newItem.trim()}>
           Add
         </button>
@@ -148,13 +193,24 @@ export default function App() {
         </select>
       </div>
 
+      <input
+        type="text"
+        placeholder="Search tasks..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+
       <div className="list-header">
         <h1 className="header">TO-DO List</h1>
         <button className="btn btn-secondary" onClick={sortByDueDate}>Sort by Due Date</button>
+        <button className="btn btn-secondary" onClick={archiveCompleted}>Archive Completed Tasks</button>
+        <button className="btn btn-secondary" onClick={toggleTheme}>
+          Toggle {theme === 'light' ? 'Dark' : 'Light'} Mode
+        </button>
       </div>
 
       <ul className="list">
-        {filteredItems.map((item) => (
+        {filteredItems.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase())).map((item) => (
           <li key={item.id}>
             <label>
               <input
@@ -169,6 +225,7 @@ export default function App() {
                 }}
               >
                 {item.name} - Category: {item.category} - Due: {item.dueDate}
+                - Priority: {item.priority} - Tags: {item.tags.join(', ')}
               </span>
             </label>
             <button
@@ -181,6 +238,15 @@ export default function App() {
             >
               Delete
             </button>
+          </li>
+        ))}
+      </ul>
+
+      <h2>Archived Tasks</h2>
+      <ul>
+        {archivedItems.map((item) => (
+          <li key={item.id}>
+            <span>{item.name} - Category: {item.category} - Due: {item.dueDate}</span>
           </li>
         ))}
       </ul>
