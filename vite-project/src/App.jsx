@@ -6,39 +6,40 @@ let nextId = 0;
 export default function App() {
   const [newItem, setNewItem] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [priority, setPriority] = useState('Low');  // Priority feature
-  const [tags, setTags] = useState('');  // Tags feature
+  const [priority, setPriority] = useState("Low"); // Priority feature
+  const [tags, setTags] = useState(""); // Tags feature
   const [items, setItems] = useState(() => {
-    const savedItems = localStorage.getItem('items');
+    const savedItems = localStorage.getItem("items");
     if (savedItems) {
       return JSON.parse(savedItems);
     }
     return [];
   });
   const [categories, setCategories] = useState(() => {
-    const savedCategories = localStorage.getItem('categories');
+    const savedCategories = localStorage.getItem("categories");
     if (savedCategories) {
       return JSON.parse(savedCategories);
     }
-    return ['Work', 'Personal', 'Shopping'];
+    return ["Work", "Personal", "Shopping"];
   });
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [currentFilter, setCurrentFilter] = useState('All');
-  const [searchQuery, setSearchQuery] = useState("");  // Search functionality
-  const [archivedItems, setArchivedItems] = useState([]);  // Archive feature
-  const [theme, setTheme] = useState('light');  // Dark/Light mode feature
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [currentFilter, setCurrentFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState(""); // Search functionality
+  const [archivedItems, setArchivedItems] = useState([]); // Archive feature
+  const [theme, setTheme] = useState("light"); // Dark/Light mode feature
 
   // Persist items and categories in localStorage
   useEffect(() => {
-    localStorage.setItem('items', JSON.stringify(items));
+    localStorage.setItem("items", JSON.stringify(items));
   }, [items]);
 
   useEffect(() => {
-    localStorage.setItem('categories', JSON.stringify(categories));
+    localStorage.setItem("categories", JSON.stringify(categories));
   }, [categories]);
 
   useEffect(() => {
-    document.body.className = theme;
+    document.body.classList.toggle("dark", theme === "dark");
+    document.body.classList.toggle("light", theme === "light");
   }, [theme]);
 
   // Toggle completion status
@@ -51,10 +52,15 @@ export default function App() {
   };
 
   // Handle new item submission
+  // Inside the handleSubmit function
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!newItem.trim()) return;
+    // Check if the new item and category are selected
+    if (!newItem.trim() || !selectedCategory) {
+      alert("Please enter a new item and select a category.");
+      return;
+    }
 
     setItems((prevItems) => [
       ...prevItems,
@@ -63,28 +69,34 @@ export default function App() {
         name: newItem,
         isCompleted: false,
         category: selectedCategory,
-        dueDate: dueDate,
+        dueDate: dueDate || "No due date", // Handle empty due date
         priority: priority,
-        tags: tags.split(',').map(tag => tag.trim()),  // Handling multiple tags
-      }
+        tags: tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean), // Ensure no empty tags
+      },
     ]);
 
+    // Reset form fields
     setNewItem("");
     setDueDate("");
     setSelectedCategory("");
-    setPriority('Low');
-    setTags('');
+    setPriority("Low");
+    setTags("");
   };
 
   // Sort items by due date
   const sortByDueDate = () => {
-    setItems([...items].sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)));
+    setItems(
+      [...items].sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+    );
   };
 
   // Get current date string for due date input minimum
   const getTodayString = () => {
     const today = new Date();
-    return today.toISOString().split('T')[0];
+    return today.toISOString().split("T")[0];
   };
 
   // Check if the item is overdue
@@ -93,9 +105,10 @@ export default function App() {
   };
 
   // Filter items by selected category
-  const filteredItems = currentFilter === 'All' 
-    ? items 
-    : items.filter(item => item.category === currentFilter);
+  const filteredItems =
+    currentFilter === "All"
+      ? items
+      : items.filter((item) => item.category === currentFilter);
 
   // Add new category
   const addCategory = (newCategory) => {
@@ -106,13 +119,16 @@ export default function App() {
 
   // Archive completed tasks
   const archiveCompleted = () => {
-    setArchivedItems([...archivedItems, ...items.filter(item => item.isCompleted)]);
-    setItems(items.filter(item => !item.isCompleted));
+    setArchivedItems([
+      ...archivedItems,
+      ...items.filter((item) => item.isCompleted),
+    ]);
+    setItems(items.filter((item) => !item.isCompleted));
   };
 
   // Dark/Light theme toggle
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
   return (
@@ -202,51 +218,62 @@ export default function App() {
 
       <div className="list-header">
         <h1 className="header">TO-DO List</h1>
-        <button className="btn btn-secondary" onClick={sortByDueDate}>Sort by Due Date</button>
-        <button className="btn btn-secondary" onClick={archiveCompleted}>Archive Completed Tasks</button>
+        <button className="btn btn-secondary" onClick={sortByDueDate}>
+          Sort by Due Date
+        </button>
+        <button className="btn btn-secondary" onClick={archiveCompleted}>
+          Archive Completed Tasks
+        </button>
         <button className="btn btn-secondary" onClick={toggleTheme}>
-          Toggle {theme === 'light' ? 'Dark' : 'Light'} Mode
+          Toggle {theme === "light" ? "Dark" : "Light"} Mode
         </button>
       </div>
 
       <ul className="list">
-        {filteredItems.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase())).map((item) => (
-          <li key={item.id}>
-            <label>
-              <input
-                type="checkbox"
-                onChange={() => toggleComplete(item.id)}
-                checked={item.isCompleted}
-              />
-              <span
-                style={{
-                  textDecoration: item.isCompleted ? "line-through" : "none",
-                  color: isOverdue(item.dueDate) ? "red" : "inherit",
+        {filteredItems
+          .filter((item) =>
+            item.name.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          .map((item) => (
+            <li key={item.id}>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={() => toggleComplete(item.id)}
+                  checked={item.isCompleted}
+                />
+                <span
+                  style={{
+                    textDecoration: item.isCompleted ? "line-through" : "none",
+                    color: isOverdue(item.dueDate) ? "red" : "inherit",
+                  }}
+                >
+                  {item.name} - Category: {item.category} - Due:{" "}
+                  {item.dueDate || "No due date"}- Priority: {item.priority} -
+                  Tags: {(item.tags || []).join(", ")}
+                </span>
+              </label>
+              <button
+                className="btn btn-danger"
+                onClick={() => {
+                  setItems((prevItems) =>
+                    prevItems.filter((a) => a.id !== item.id)
+                  );
                 }}
               >
-                {item.name} - Category: {item.category} - Due: {item.dueDate}
-                - Priority: {item.priority} - Tags: {item.tags.join(', ')}
-              </span>
-            </label>
-            <button
-              className="btn btn-danger"
-              onClick={() => {
-                setItems((prevItems) =>
-                  prevItems.filter((a) => a.id !== item.id)
-                );
-              }}
-            >
-              Delete
-            </button>
-          </li>
-        ))}
+                Delete
+              </button>
+            </li>
+          ))}
       </ul>
 
       <h2>Archived Tasks</h2>
       <ul>
         {archivedItems.map((item) => (
           <li key={item.id}>
-            <span>{item.name} - Category: {item.category} - Due: {item.dueDate}</span>
+            <span>
+              {item.name} - Category: {item.category} - Due: {item.dueDate}
+            </span>
           </li>
         ))}
       </ul>
