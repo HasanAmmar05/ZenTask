@@ -129,7 +129,7 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen bg-gray-100 ${theme === "dark" ? "bg-gray-900 text-gray-200" : "text-gray-900"} p-8`}>
+    <div className={`min-h-fit min-w-full bg-gray-100 ${theme === "dark" ? "bg-gray-900 text-gray-200" : "text-gray-900"} p-8`}>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="form-row flex flex-col">
           <label htmlFor="item" className="text-lg font-semibold mb-1">New Item</label>
