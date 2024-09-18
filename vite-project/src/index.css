@@ -1,0 +1,42 @@
+body.light {
+  background-color: #f0f4f8;
+  color: #333;
+}
+
+body.dark {
+  background-color: #1e1e1e;
+  color: #eaeaea;
+}
+
+form {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+input,
+select {
+  background-color: #f9f9f9;
+  border-color: #ddd;
+}
+
+input:focus,
+select:focus {
+  border-color: #007bff;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.list-header {
+  border-bottom: 2px solid #eaeaea;
+  padding-bottom: 8px;
+}
