@@ -1,0 +1,31 @@
+body.light {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+body.dark {
+  background-color: #343a40;
+  color: #f8f9fa;
+}
+
+/* Additional styling for overdue tasks */
+li.bg-red-200 {
+  border: 2px solid #dc3545;
+}
+
+/* Shadow for buttons and containers */
+button {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+div.shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Calendar styling */
+input[type="date"] {
+  cursor: pointer;
+  appearance: none;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
