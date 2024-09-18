@@ -26,7 +26,7 @@ export default function App() {
             id="item"
           ></input>
         </div>
-        <button className="btn" type="submit">
+        <button className="btn" type="submit" disabled={!NewItem.trim()}>
           Add
         </button>
       </form>
