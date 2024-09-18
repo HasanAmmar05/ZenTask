@@ -1,42 +1,31 @@
 body.light {
-  background-color: #f0f4f8;
-  color: #333;
+  background-color: #f8f9fa;
+  color: #212529;
 }
 
 body.dark {
-  background-color: #1e1e1e;
-  color: #eaeaea;
+  background-color: #343a40;
+  color: #f8f9fa;
 }
 
-form {
-  background-color: #ffffff;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+/* Additional styling for overdue tasks */
+li.bg-red-200 {
+  border: 2px solid #dc3545;
 }
 
-input,
-select {
-  background-color: #f9f9f9;
-  border-color: #ddd;
-}
-
-input:focus,
-select:focus {
-  border-color: #007bff;
-}
-
+/* Shadow for buttons and containers */
 button {
-  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+div.shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Calendar styling */
+input[type="date"] {
   cursor: pointer;
-  font-size: 16px;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-.list-header {
-  border-bottom: 2px solid #eaeaea;
-  padding-bottom: 8px;
+  appearance: none;
+  padding: 0.5rem;
+  border-radius: 4px;
 }
