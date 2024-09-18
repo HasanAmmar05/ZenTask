@@ -41,6 +41,8 @@ export default function App() {
     return new Date(dueDate) < new Date(new Date().toDateString());
   };
 
+  const [categories, setCategories] = useState(['Work', 'Personal', 'Shopping']);
+
   return (
     <div className="app-container">
       <form className="new-item-form" onSubmit={handleSubmit}>
