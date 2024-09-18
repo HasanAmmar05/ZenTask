@@ -41,6 +41,11 @@ export default function App() {
             </label>
             <button
               className="btn btn-danger"
+              onClick={() => {
+                setItems((prevItems) =>
+                  prevItems.filter((a) => a.id !== item.id)
+                );
+              }}
             >
               Delete
             </button>
