@@ -129,10 +129,16 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-fit min-w-full bg-gray-100 ${theme === "dark" ? "bg-gray-900 text-gray-200" : "text-gray-900"} p-8`}>
+    <div
+      className={`min-h-fit min-w-full bg-gray-100 ${
+        theme === "dark" ? "bg-gray-900 text-gray-200" : "text-gray-900"
+      } p-8`}
+    >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="form-row flex flex-col">
-          <label htmlFor="item" className="text-lg font-semibold mb-1">New Item</label>
+          <label htmlFor="item" className="text-lg font-semibold mb-1">
+            New Item
+          </label>
           <input
             value={newItem}
             onChange={(e) => setNewItem(e.target.value)}
@@ -141,7 +147,9 @@ export default function App() {
           />
         </div>
         <div className="form-row flex flex-col">
-          <label htmlFor="dueDate" className="text-lg font-semibold mb-1">Due Date</label>
+          <label htmlFor="dueDate" className="text-lg font-semibold mb-1">
+            Due Date
+          </label>
           <input
             type="date"
             id="dueDate"
@@ -152,7 +160,9 @@ export default function App() {
           />
         </div>
         <div className="form-row flex flex-col">
-          <label htmlFor="category" className="text-lg font-semibold mb-1">Category</label>
+          <label htmlFor="category" className="text-lg font-semibold mb-1">
+            Category
+          </label>
           <select
             id="category"
             value={selectedCategory}
@@ -168,7 +178,9 @@ export default function App() {
           </select>
         </div>
         <div className="form-row flex flex-col">
-          <label htmlFor="priority" className="text-lg font-semibold mb-1">Priority</label>
+          <label htmlFor="priority" className="text-lg font-semibold mb-1">
+            Priority
+          </label>
           <select
             id="priority"
             value={priority}
@@ -181,7 +193,9 @@ export default function App() {
           </select>
         </div>
         <div className="form-row flex flex-col">
-          <label htmlFor="tags" className="text-lg font-semibold mb-1">Tags (comma-separated)</label>
+          <label htmlFor="tags" className="text-lg font-semibold mb-1">
+            Tags (comma-separated)
+          </label>
           <input
             type="text"
             id="tags"
@@ -201,7 +215,9 @@ export default function App() {
 
       <div className="mt-8 space-y-4">
         <div className="flex items-center space-x-4">
-          <label htmlFor="filter" className="font-semibold">Filter by category: </label>
+          <label htmlFor="filter" className="font-semibold">
+            Filter by category:{" "}
+          </label>
           <select
             id="filter"
             value={currentFilter}
@@ -228,13 +244,22 @@ export default function App() {
       <div className="list-header mt-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold">TO-DO List</h1>
         <div className="space-x-2">
-          <button className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition" onClick={sortByDueDate}>
+          <button
+            className="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center ml-4 me-2 mb-2"
+            onClick={sortByDueDate}
+          >
             Sort by Due Date
           </button>
-          <button className="p-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition" onClick={archiveCompleted}>
+          <button
+            className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            onClick={archiveCompleted}
+          >
             Archive Completed Tasks
           </button>
-          <button className="p-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition" onClick={toggleTheme}>
+          <button
+            className="p-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
+            onClick={toggleTheme}
+          >
             Toggle {theme === "light" ? "Dark" : "Light"} Mode
           </button>
         </div>
@@ -246,7 +271,10 @@ export default function App() {
             item.name.toLowerCase().includes(searchQuery.toLowerCase())
           )
           .map((item) => (
-            <li key={item.id} className="flex items-center justify-between p-2 border border-gray-200 rounded-md bg-white shadow-sm">
+            <li
+              key={item.id}
+              className="flex items-center justify-between p-2 border border-gray-200 rounded-md bg-white shadow-sm"
+            >
               <label className="flex items-center space-x-2">
                 <input
                   type="checkbox"
@@ -255,14 +283,22 @@ export default function App() {
                   className="form-checkbox"
                 />
                 <span
-                  className={`${item.isCompleted ? "line-through text-gray-500" : ""} ${isOverdue(item.dueDate) ? "text-red-500" : ""}`}
+                  className={`${
+                    item.isCompleted ? "line-through text-gray-500" : ""
+                  } ${isOverdue(item.dueDate) ? "text-red-500" : ""}`}
                 >
-                  {item.name} - Category: {item.category} - Due: {item.dueDate || "No due date"} - Priority: {item.priority} - Tags: {(item.tags || []).join(", ")}
+                  {item.name} - Category: {item.category} - Due:{" "}
+                  {item.dueDate || "No due date"} - Priority: {item.priority} -
+                  Tags: {(item.tags || []).join(", ")}
                 </span>
               </label>
               <button
                 className="p-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-                onClick={() => setItems((prevItems) => prevItems.filter((a) => a.id !== item.id))}
+                onClick={() =>
+                  setItems((prevItems) =>
+                    prevItems.filter((a) => a.id !== item.id)
+                  )
+                }
               >
                 Delete
               </button>
