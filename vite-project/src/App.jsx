@@ -1,10 +1,52 @@
-import React from 'react'
-import "./styles.css"
+import React, { useState } from "react";
+import "./index.css";
 
-const App = () => {
+let nextId = 0;
+
+export default function App() {
+  const [NewItem, setNewItem] = useState("");
+  const [items, setItems] = useState([]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    setItems((prevItems) => [...prevItems, { id: nextId++, name: NewItem }]);
+
+    setNewItem("");
+  };
+
   return (
-    <div>App</div>
-  )
-}
+    <>
+      <form className="new-item-form" onSubmit={handleSubmit}>
+        <div className="form-row">
+          <label htmlFor="item">New Item</label>
+          <input
+            value={NewItem}
+            onChange={(e) => setNewItem(e.target.value)}
+            id="item"
+          ></input>
+        </div>
+        <button className="btn" type="submit">
+          Add
+        </button>
+      </form>
 
-export default App
+      <h1 className="header"> TO-DO List</h1>
+      <ul className="list">
+        {items.map((item) => (
+          <li key={item.id}>
+            
+            <label>
+              <input type="checkbox" /> {item.name}
+            </label>
+            <button
+              className="btn btn-danger"
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
