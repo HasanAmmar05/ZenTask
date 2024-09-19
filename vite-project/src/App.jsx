@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import { Editor } from "@tinymce/tinymce-react";
 import { Line } from "react-chartjs-2";
 import "react-datepicker/dist/react-datepicker.css";
+import PomodoroTimer from "./PomodoroTimer";
 import "./index.css";
 
 let nextId = 0;
@@ -35,6 +36,7 @@ export default function App() {
     const savedTheme = localStorage.getItem("theme");
     return savedTheme || "light";
   });
+
   const [newCategory, setNewCategory] = useState("");
   const [filterBy, setFilterBy] = useState("none");
 
@@ -303,6 +305,18 @@ export default function App() {
     }));
   };
 
+  const toggleTimer = (id) => {
+    setActiveTimers((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const handleTimerComplete = (id) => {
+    console.log(`Timer completed for task ${id}`);
+    // You can add logic here to handle timer completion, e.g., mark the task as completed
+  };
+
   const toggleSubTaskComplete = (parentId, subTaskId) => {
     setSubTasks((prevSubTasks) => ({
       ...prevSubTasks,
@@ -482,7 +496,6 @@ export default function App() {
   const renderItemList = (items) => {
     return (
       <>
-
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="list">
             {(provided) => (
@@ -515,14 +528,18 @@ export default function App() {
                             ? "bg-red-100"
                             : "bg-white"
                         } border ${
-                          theme === "dark" ? "border-gray-700" : "border-gray-200"
+                          theme === "dark"
+                            ? "border-gray-700"
+                            : "border-gray-200"
                         }
-                        ${snapshot.isDragging ? "opacity-75" : ""}`}
+                      ${snapshot.isDragging ? "opacity-75" : ""}`}
                       >
                         <div className="flex items-center justify-between">
                           <h2
                             className={`text-lg font-semibold ${
-                              item.isCompleted ? "line-through text-gray-500" : ""
+                              item.isCompleted
+                                ? "line-through text-gray-500"
+                                : ""
                             }`}
                           >
                             {item.name}
@@ -559,7 +576,9 @@ export default function App() {
                         <div className="mt-2 flex flex-wrap items-center gap-2">
                           <span
                             className={`text-sm ${
-                              theme === "dark" ? "text-gray-400" : "text-gray-600"
+                              theme === "dark"
+                                ? "text-gray-400"
+                                : "text-gray-600"
                             }`}
                           >
                             {item.dueDate
@@ -579,14 +598,18 @@ export default function App() {
                           </span>
                           <span
                             className={`text-sm ${
-                              theme === "dark" ? "text-gray-400" : "text-gray-600"
+                              theme === "dark"
+                                ? "text-gray-400"
+                                : "text-gray-600"
                             }`}
                           >
                             Category: {item.category}
                           </span>
                           <div
                             className={`text-sm ${
-                              theme === "dark" ? "text-gray-400" : "text-gray-600"
+                              theme === "dark"
+                                ? "text-gray-400"
+                                : "text-gray-600"
                             }`}
                           >
                             Tags: {item.tags.join(", ")}
@@ -597,14 +620,28 @@ export default function App() {
                             onClick={() => toggleTimer(item.id)}
                             className="px-3 py-1 rounded-md bg-purple-500 hover:bg-purple-600 text-white transition duration-300 shadow-md"
                           >
-                            {activeTimers[item.id] ? "Hide Timer" : "Show Timer"}
+                            {activeTimers[item.id]
+                              ? "Hide Timer"
+                              : "Show Timer"}
                           </button>
                           {activeTimers[item.id] && (
                             <PomodoroTimer
-                              onTimerComplete={() => handleTimerComplete(item.id)}
+                              onTimerComplete={() =>
+                                handleTimerComplete(item.id)
+                              }
                             />
                           )}
                         </div>
+                        {item.description && (
+                          <div className="mt-2">
+                            <h4 className="font-semibold">Description:</h4>
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: item.description,
+                              }}
+                            />
+                          </div>
+                        )}
                       </div>
                     )}
                   </Draggable>
@@ -617,7 +654,6 @@ export default function App() {
       </>
     );
   };
-  
 
   return (
     <div
@@ -660,7 +696,7 @@ export default function App() {
               <DatePicker
                 selected={dueDate}
                 onChange={(date) => setDueDate(date)}
-                className={`w-full p-2 rounded-md border ${
+                className={`w-full p-2 rounded-md border   ${
                   theme === "dark"
                     ? "bg-gray-700 border-gray-600 text-white"
                     : "bg-white border-gray-300"
@@ -736,9 +772,10 @@ export default function App() {
               />
             </div>
           </div>
-
           {/* Rich Text Editor for Task Description */}
-          <div>
+          <div className="relative z-0">
+            {" "}
+            {/* Add relative positioning and lower z-index */}
             <label
               htmlFor="description"
               className="block text-sm font-medium mb-1"
@@ -746,25 +783,70 @@ export default function App() {
               Description
             </label>
             <Editor
-              apiKey="your-tinymce-api-key"
+              apiKey="tdr7966j0zlc5yisfa0szvmdpklyo9f2rb5cwa2oaypjv4n4"
               initialValue=""
               init={{
                 height: 300,
                 menubar: false,
                 plugins: [
-                  "advlist autolink lists link image charmap print preview anchor",
-                  "searchreplace visualblocks code fullscreen",
-                  "insertdatetime media table paste code help wordcount",
+                  "anchor",
+                  "autolink",
+                  "charmap",
+                  "codesample",
+                  "emoticons",
+                  "image",
+                  "link",
+                  "lists",
+                  "media",
+                  "searchreplace",
+                  "table",
+                  "visualblocks",
+                  "wordcount",
+                  "checklist",
+                  "mediaembed",
+                  "casechange",
+                  "export",
+                  "formatpainter",
+                  "pageembed",
+                  "a11ychecker",
+                  "tinymcespellchecker",
+                  "permanentpen",
+                  "powerpaste",
+                  "advtable",
+                  "advcode",
+                  "editimage",
+                  "advtemplate",
+                  "ai",
+                  "mentions",
+                  "tinycomments",
+                  "tableofcontents",
+                  "footnotes",
+                  "mergetags",
+                  "autocorrect",
+                  "typography",
+                  "inlinecss",
+                  "markdown",
                 ],
                 toolbar:
-                  "undo redo | formatselect | bold italic backcolor | \
-                          alignleft aligncenter alignright alignjustify | \
-                          bullist numlist outdent indent | removeformat | help",
+                  "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | " +
+                  "link image media table mergetags | addcomment showcomments | " +
+                  "spellcheckdialog a11ycheck typography | align lineheight | " +
+                  "checklist numlist bullist indent outdent | emoticons charmap | removeformat",
+                tinycomments_mode: "embedded",
+                tinycomments_author: "Author name",
+                mergetags_list: [
+                  { value: "First.Name", title: "First Name" },
+                  { value: "Email", title: "Email" },
+                ],
+                ai_request: (request, respondWith) =>
+                  respondWith.string(() =>
+                    Promise.reject("See docs to implement AI Assistant")
+                  ),
               }}
               onEditorChange={(content) => setTaskDescription(content)}
             />
           </div>
-
+          
           <button
             className="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 shadow-md"
             type="submit"
@@ -805,7 +887,138 @@ export default function App() {
           </select>
         </div>
 
-        {/* ... (rest of the component remains the same) */}
+        {/* Filters and Search */}
+        <div
+          className={`mt-4 p-4 rounded-lg shadow-md ${
+            theme === "dark" ? "bg-gray-800" : "bg-white"
+          }`}
+        >
+          <div className="flex flex-wrap gap-2 mb-4">
+            <button
+              onClick={() => setCurrentFilter("All")}
+              className={`px-3 py-1 rounded-md ${
+                currentFilter === "All"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-800"
+              }`}
+            >
+              All
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setCurrentFilter(category)}
+                className={`px-3 py-1 rounded-md ${
+                  currentFilter === category
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-800"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+          <input
+            type="text"
+            placeholder="Search tasks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={`w-full p-2 rounded-md border ${
+              theme === "dark"
+                ? "bg-gray-700 border-gray-600 text-white"
+                : "bg-white border-gray-300"
+            }`}
+          />
+        </div>
+
+        {/* Task List */}
+        <div
+          className={`mt-4 p-4 rounded-lg shadow-md ${
+            theme === "dark" ? "bg-gray-800" : "bg-white"
+          }`}
+        >
+          <h2 className="text-2xl font-bold mb-4">
+            {showArchived ? "Archived Tasks" : "Current Tasks"}
+          </h2>
+          <div className="mb-4 flex justify-between items-center">
+            <button
+              onClick={toggleShowArchived}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300"
+            >
+              {showArchived ? "Show Current Tasks" : "Show Archived Tasks"}
+            </button>
+            <div>
+              <button
+                onClick={sortByDueDate}
+                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300 mr-2"
+              >
+                Sort by Due Date
+              </button>
+              <button
+                onClick={archiveCompleted}
+                className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-300"
+              >
+                Archive Completed
+              </button>
+            </div>
+          </div>
+          {renderFilteredItems()}
+        </div>
+
+        {/* Category Management */}
+        <div
+          className={`mt-4 p-4 rounded-lg shadow-md ${
+            theme === "dark" ? "bg-gray-800" : "bg-white"
+          }`}
+        >
+          <h3 className="text-lg font-semibold mb-2">Manage Categories</h3>
+          <form onSubmit={addCategory} className="mb-4">
+            <input
+              type="text"
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
+              placeholder="New category name"
+              className={`w-full p-2 rounded-md border ${
+                theme === "dark"
+                  ? "bg-gray-700 border-gray-600 text-white"
+                  : "bg-white border-gray-300"
+              } mb-2`}
+            />
+            <button
+              type="submit"
+              className="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
+            >
+              Add Category
+            </button>
+          </form>
+          <div className="space-y-2">
+            {categories.map((category) => (
+              <div key={category} className="flex justify-between items-center">
+                <span>{category}</span>
+                <button
+                  onClick={() => deleteCategory(category)}
+                  className="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-300"
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Theme Toggle */}
+        <div className="mt-4 text-center">
+          <button
+            onClick={toggleTheme}
+            className={`px-4 py-2 rounded-md ${
+              theme === "dark"
+                ? "bg-yellow-400 text-gray-900"
+                : "bg-gray-800 text-white"
+            } transition duration-300`}
+          >
+            {theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          </button>
+        </div>
       </div>
     </div>
   );

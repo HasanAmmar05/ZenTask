@@ -36,6 +36,8 @@ const PomodoroTimer = ({ onTimerComplete }) => {
     setSeconds(0);
   };
 
+  
+
   return (
     <div className="mt-2 p-2 bg-gray-200 dark:bg-gray-700 rounded-md">
       <div className="text-2xl font-bold mb-2">
