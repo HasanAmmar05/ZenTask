@@ -673,7 +673,7 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="item" className="block text-sm font-medium mb-1">
-                New Item
+                New Task
               </label>
               <input
                 value={newItem}
