@@ -477,141 +477,156 @@ export default function App() {
     }
   };
 
+  const sortTasksByCategory = () => {
+    const sortedTasks = [...tasks].sort((a, b) => a.category.localeCompare(b.category));
+    setTasks(sortedTasks);
+  };
+  
+
   const renderItemList = (items) => {
     return (
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="list">
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className="space-y-4"
-            >
-              {items.map((item, index) => (
-                <Draggable
-                  key={item.id}
-                  draggableId={item.id.toString()}
-                  index={index}
-                >
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      className={`p-4 rounded-lg shadow-md ${
-                        theme === "dark"
-                          ? item.isCompleted
-                            ? "bg-gray-700"
+      <>
+        <button
+          onClick={sortTasksByCategory}
+          className="px-3 py-1 rounded-md bg-yellow-500 hover:bg-yellow-600 text-white transition duration-300"
+        >
+          Sort by Category
+        </button>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="list">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="space-y-4"
+              >
+                {items.map((item, index) => (
+                  <Draggable
+                    key={item.id}
+                    draggableId={item.id.toString()}
+                    index={index}
+                  >
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className={`p-4 rounded-lg shadow-md ${
+                          theme === "dark"
+                            ? item.isCompleted
+                              ? "bg-gray-700"
+                              : isOverdue(item.dueDate)
+                              ? "bg-red-900"
+                              : "bg-gray-800"
+                            : item.isCompleted
+                            ? "bg-green-100"
                             : isOverdue(item.dueDate)
-                            ? "bg-red-900"
-                            : "bg-gray-800"
-                          : item.isCompleted
-                          ? "bg-green-100"
-                          : isOverdue(item.dueDate)
-                          ? "bg-red-100"
-                          : "bg-white"
-                      } border ${
-                        theme === "dark" ? "border-gray-700" : "border-gray-200"
-                      }
-                      ${snapshot.isDragging ? "opacity-75" : ""}`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <h2
-                          className={`text-lg font-semibold ${
-                            item.isCompleted ? "line-through text-gray-500" : ""
-                          }`}
-                        >
-                          {item.name}
-                        </h2>
-                        <div className="space-x-2">
-                          <button
-                            className={`px-3 py-1 rounded-md ${
-                              item.isCompleted
-                                ? "bg-gray-500 hover:bg-gray-600"
-                                : "bg-blue-500 hover:bg-blue-600"
-                            } text-white transition duration-300 shadow-md`}
-                            onClick={() =>
-                              toggleComplete(item.id, showArchived)
-                            }
+                            ? "bg-red-100"
+                            : "bg-white"
+                        } border ${
+                          theme === "dark" ? "border-gray-700" : "border-gray-200"
+                        }
+                        ${snapshot.isDragging ? "opacity-75" : ""}`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <h2
+                            className={`text-lg font-semibold ${
+                              item.isCompleted ? "line-through text-gray-500" : ""
+                            }`}
                           >
-                            {item.isCompleted ? "Undo" : "Complete"}
-                          </button>
-                          <button
-                            className="px-3 py-1 rounded-md bg-red-500 hover:bg-red-600 text-white transition duration-300 shadow-md"
-                            onClick={() => deleteItem(item.id, showArchived)}
-                          >
-                            Delete
-                          </button>
-                          {showArchived && (
+                            {item.name}
+                          </h2>
+                          <div className="space-x-2">
                             <button
-                              className="px-3 py-1 rounded-md bg-indigo-500 hover:bg-indigo-600 text-white transition duration-300 shadow-md"
-                              onClick={() => unarchiveItem(item.id)}
+                              className={`px-3 py-1 rounded-md ${
+                                item.isCompleted
+                                  ? "bg-gray-500 hover:bg-gray-600"
+                                  : "bg-blue-500 hover:bg-blue-600"
+                              } text-white transition duration-300 shadow-md`}
+                              onClick={() =>
+                                toggleComplete(item.id, showArchived)
+                              }
                             >
-                              Unarchive
+                              {item.isCompleted ? "Undo" : "Complete"}
                             </button>
+                            <button
+                              className="px-3 py-1 rounded-md bg-red-500 hover:bg-red-600 text-white transition duration-300 shadow-md"
+                              onClick={() => deleteItem(item.id, showArchived)}
+                            >
+                              Delete
+                            </button>
+                            {showArchived && (
+                              <button
+                                className="px-3 py-1 rounded-md bg-indigo-500 hover:bg-indigo-600 text-white transition duration-300 shadow-md"
+                                onClick={() => unarchiveItem(item.id)}
+                              >
+                                Unarchive
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                        <div className="mt-2 flex flex-wrap items-center gap-2">
+                          <span
+                            className={`text-sm ${
+                              theme === "dark" ? "text-gray-400" : "text-gray-600"
+                            }`}
+                          >
+                            {item.dueDate
+                              ? new Date(item.dueDate).toLocaleDateString()
+                              : "No due date"}
+                          </span>
+                          <span
+                            className={`text-sm px-2 py-1 rounded-md ${
+                              item.priority === "High"
+                                ? "bg-red-500 text-white"
+                                : item.priority === "Medium"
+                                ? "bg-yellow-500 text-black"
+                                : "bg-green-500 text-white"
+                            }`}
+                          >
+                            {item.priority}
+                          </span>
+                          <span
+                            className={`text-sm ${
+                              theme === "dark" ? "text-gray-400" : "text-gray-600"
+                            }`}
+                          >
+                            Category: {item.category}
+                          </span>
+                          <div
+                            className={`text-sm ${
+                              theme === "dark" ? "text-gray-400" : "text-gray-600"
+                            }`}
+                          >
+                            Tags: {item.tags.join(", ")}
+                          </div>
+                        </div>
+                        <div className="mt-2">
+                          <button
+                            onClick={() => toggleTimer(item.id)}
+                            className="px-3 py-1 rounded-md bg-purple-500 hover:bg-purple-600 text-white transition duration-300 shadow-md"
+                          >
+                            {activeTimers[item.id] ? "Hide Timer" : "Show Timer"}
+                          </button>
+                          {activeTimers[item.id] && (
+                            <PomodoroTimer
+                              onTimerComplete={() => handleTimerComplete(item.id)}
+                            />
                           )}
                         </div>
                       </div>
-                      <div className="mt-2 flex flex-wrap items-center gap-2">
-                        <span
-                          className={`text-sm ${
-                            theme === "dark" ? "text-gray-400" : "text-gray-600"
-                          }`}
-                        >
-                          {item.dueDate
-                            ? new Date(item.dueDate).toLocaleDateString()
-                            : "No due date"}
-                        </span>
-                        <span
-                          className={`text-sm px-2 py-1 rounded-md ${
-                            item.priority === "High"
-                              ? "bg-red-500 text-white"
-                              : item.priority === "Medium"
-                              ? "bg-yellow-500 text-black"
-                              : "bg-green-500 text-white"
-                          }`}
-                        >
-                          {item.priority}
-                        </span>
-                        <span
-                          className={`text-sm ${
-                            theme === "dark" ? "text-gray-400" : "text-gray-600"
-                          }`}
-                        >
-                          Category: {item.category}
-                        </span>
-                        <div
-                          className={`text-sm ${
-                            theme === "dark" ? "text-gray-400" : "text-gray-600"
-                          }`}
-                        >
-                          Tags: {item.tags.join(", ")}
-                        </div>
-                      </div>
-                      <div className="mt-2">
-                        <button
-                          onClick={() => toggleTimer(item.id)}
-                          className="px-3 py-1 rounded-md bg-purple-500 hover:bg-purple-600 text-white transition duration-300 shadow-md"
-                        >
-                          {activeTimers[item.id] ? "Hide Timer" : "Show Timer"}
-                        </button>
-                        {activeTimers[item.id] && (
-                          <PomodoroTimer
-                            onTimerComplete={() => handleTimerComplete(item.id)}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </>
     );
   };
+  
 
   return (
     <div
