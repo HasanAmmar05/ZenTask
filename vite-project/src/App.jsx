@@ -477,21 +477,12 @@ export default function App() {
     }
   };
 
-  const sortTasksByCategory = () => {
-    const sortedTasks = [...tasks].sort((a, b) => a.category.localeCompare(b.category));
-    setTasks(sortedTasks);
-  };
-  
+
 
   const renderItemList = (items) => {
     return (
       <>
-        <button
-          onClick={sortTasksByCategory}
-          className="px-3 py-1 rounded-md bg-yellow-500 hover:bg-yellow-600 text-white transition duration-300"
-        >
-          Sort by Category
-        </button>
+
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="list">
             {(provided) => (
