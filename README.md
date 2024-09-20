@@ -2,7 +2,7 @@
 
 A simple and efficient Pomodoro-based task management app built with React, tailwind CSS and Vite. This application allows users to manage tasks with drag-and-drop functionality, set due dates, assign priorities and tags, and visualize progress through charts. It also includes a Pomodoro timer to help with time management.
 
-Website Link : https://fantastic-sorbet-983e39.netlify.app/
+Website Link : [https://fantastic-sorbet-983e39.netlify.app/](https://66ed2bc92bb45613a3cd237c--earnest-bublanina-c9dcf2.netlify.app/)
 
 ## **Features**
 
