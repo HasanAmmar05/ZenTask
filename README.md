@@ -7,10 +7,8 @@ Website Link : https://fantastic-sorbet-983e39.netlify.app/
 ## **Features**
 
 - **Add tasks with due dates, priorities, and tags**
-- **Drag-and-drop tasks for easy organization** (using `react-beautiful-dnd`)
 - **Pomodoro timer integration**
 - **Rich text editing for task details** (powered by `TinyMCE`)
-- **Visualize task progress using charts** (powered by `Chart.js`)
 - **Persistent data storage using browser's localStorage**
 
 ## **Installation**
