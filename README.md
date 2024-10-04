@@ -18,6 +18,9 @@ A feature-rich and advanced task management application built with React, tailor
 - **Rich Text Editing**: Add detailed descriptions to tasks with formatting options
 - **Persistent Storage**: All data is saved in the browser's localStorage
 
+## **Project Link:**
+https://advanced-to-do-list-app.vercel.app/
+
 ## **Installation**
 
 1. **Clone the repository:**
