@@ -49,14 +49,14 @@ npm start
 
 ## **Usage**
 
-1. **Add a new task:**Use the form at the top to add new tasks with details like due date, priority, and category.
-2. **Manage categories:**Create and delete categories in the Category Manager section.
-3. **Use voice commands:**Click the "Start Listening" button and speak to add tasks hands-free.
-4. **View analytics:**Toggle the analytics dashboard to visualize your task completion rates and category distribution.
-5. **Get AI suggestions:**Use the AI Suggestions feature to get intelligent task recommendations.
-6. **Track achievements:**View your progress and unlock achievements in the Gamification section.
-7. **Use the Pomodoro timer:**Start the Pomodoro timer for focused work sessions on your tasks.
-8. **Share tasks:**Use the task sharing feature to collaborate with others (simulated).
+1. Add a new task: Use the form at the top to add new tasks with details like due date, priority, and category.
+2. Manage categories: Create and delete categories in the Category Manager section.
+3. Use voice commands: Click the "Start Listening" button and speak to add tasks hands-free.
+4. View analytics: Toggle the analytics dashboard to visualize your task completion rates and category distribution.
+5. Get AI suggestions: Use the AI Suggestions feature to get intelligent task recommendations.
+6. Track achievements: View your progress and unlock achievements in the Gamification section.
+7. Use the Pomodoro timer: Start the Pomodoro timer for focused work sessions on your tasks.
+8. Share tasks: Use the task sharing feature to collaborate with others (simulated).
 
 
 ## **Technologies Used**
