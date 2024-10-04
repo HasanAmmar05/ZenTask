@@ -4,7 +4,7 @@ import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import CategoryManager from './components/CategoryManager';
 import ThemeToggle from './components/ThemeToggle';
-import './App.css';
+import './index.css';
 
 function App() {
   const [items, setItems] = useState(() => {
