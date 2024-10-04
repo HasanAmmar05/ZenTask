@@ -1,6 +1,7 @@
 import React from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import PomodoroTimer from './PomodoroTimer';
+import TaskSharing from './TaskSharing';
 
 function TaskList({ 
   items, 
@@ -161,6 +162,7 @@ function TaskList({
                     <div className="mt-2">
                       <PomodoroTimer onTimerComplete={() => console.log(`Timer completed for task ${item.id}`)} />
                     </div>
+                    <TaskSharing item={item} theme={theme} />
                   </div>
                 )}
               </Draggable>
