@@ -4,11 +4,11 @@ import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import CategoryManager from './components/CategoryManager';
 import ThemeToggle from './components/ThemeToggle';
-import AnalyticsDashboard from './components/AnalyticsDashboard';
+import AnalyticsDashboard from './components/AnalyticsDashboard'
 import AISuggestions from './components/AISuggestions';
 import VoiceCommands from './components/VoiceCommands';
 import Gamification from './components/Gamification';
-import './App.css';
+import './index.css';
 
 function App() {
   const [items, setItems] = useState(() => {
@@ -63,7 +63,7 @@ function App() {
   return (
     <div className={`min-h-screen p-8 ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'} transition-colors duration-300`}>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8 text-center">Enhanced Todo App</h1>
+        <h1 className="text-4xl font-bold mb-8 text-center"> Advanced Todo App </h1>
         <TaskForm 
           categories={categories} 
           setItems={setItems} 

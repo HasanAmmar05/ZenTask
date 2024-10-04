@@ -102,7 +102,7 @@ function TaskForm({ categories, setItems, theme }) {
       <div className="relative z-0">
         <label htmlFor="description" className="block text-sm font-medium mb-1">Description</label>
         <Editor
-          apiKey="your-tinymce-api-key"
+          apiKey="tdr7966j0zlc5yisfa0szvmdpklyo9f2rb5cwa2oaypjv4n4"
           initialValue=""
           init={{
             height: 300,
