@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function VoiceCommands({ onAddTask, theme }) {
+function VoiceCommands({ onAddTask, categories, theme }) {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
 
@@ -43,14 +43,50 @@ function VoiceCommands({ onAddTask, theme }) {
     recognition.stop();
 
     if (transcript) {
-      onAddTask({
-        name: transcript,
-        category: 'Voice Command',
-        priority: 'Medium',
-        dueDate: new Date().toISOString(),
-      });
+      const task = parseVoiceCommand(transcript);
+      onAddTask(task);
       setTranscript('');
     }
+  };
+
+  const parseVoiceCommand = (command) => {
+    const taskRegex = /add (?:a )?task(?: called)? (.+)/i;
+    const categoryRegex = /(?:in|to) (?:the )?category (.+)/i;
+    const priorityRegex = /(?:with|at) (.+) priority/i;
+    const dueDateRegex = /(?:due|by) (.+)/i;
+
+    const taskMatch = command.match(taskRegex);
+    const categoryMatch = command.match(categoryRegex);
+    const priorityMatch = command.match(priorityRegex);
+    const dueDateMatch = command.match(dueDateRegex);
+
+    const task = {
+      name: taskMatch ? taskMatch[1] : 'Untitled Task',
+      category: categoryMatch ? categoryMatch[1] : getRandomCategory(),
+      priority: priorityMatch ? capitalizeFirstLetter(priorityMatch[1]) : getRandomPriority(),
+      dueDate: dueDateMatch ? new Date(dueDateMatch[1]).toISOString() : getRandomDueDate(),
+    };
+
+    return task;
+  };
+
+  const getRandomCategory = () => {
+    return categories[Math.floor(Math.random() * categories.length)];
+  };
+
+  const getRandomPriority = () => {
+    const priorities = ['Low', 'Medium', 'High'];
+    return priorities[Math.floor(Math.random() * priorities.length)];
+  };
+
+  const getRandomDueDate = () => {
+    const today = new Date();
+    const futureDate = new Date(today.getTime() + Math.random() * 7 * 24 * 60 * 60 * 1000);
+    return futureDate.toISOString();
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   };
 
   return (
@@ -76,6 +112,14 @@ function VoiceCommands({ onAddTask, theme }) {
           <strong>Transcript:</strong> {transcript}
         </p>
       )}
+      <div className="mt-4">
+        <h3 className="text-lg font-semibold mb-2">Voice Command Examples:</h3>
+        <ul className="list-disc list-inside">
+          <li>Add a task called Study JavaScript</li>
+          <li>Add a task Study React in the category Learning with high priority due next week</li>
+          <li>Add task Buy groceries to the category Shopping with medium priority due tomorrow</li>
+        </ul>
+      </div>
     </div>
   );
 }
