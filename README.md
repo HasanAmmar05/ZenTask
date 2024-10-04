@@ -1,14 +1,14 @@
 # **Pomodoro Task Manager**
 
-A simple and efficient Pomodoro-based task management app built with React. This application allows users to manage tasks with drag-and-drop functionality, set due dates, assign priorities and tags, and visualize progress through charts. It also includes a Pomodoro timer to help with time management.
+A simple and efficient Pomodoro-based task management app built with React, tailwind CSS and Vite. This application allows users to manage tasks with drag-and-drop functionality, set due dates, assign priorities and tags, and visualize progress through charts. It also includes a Pomodoro timer to help with time management.
+
+Website Link : https://66ed32861e17321c67987d8e--playful-torte-fed986.netlify.app/
 
 ## **Features**
 
 - **Add tasks with due dates, priorities, and tags**
-- **Drag-and-drop tasks for easy organization** (using `react-beautiful-dnd`)
 - **Pomodoro timer integration**
 - **Rich text editing for task details** (powered by `TinyMCE`)
-- **Visualize task progress using charts** (powered by `Chart.js`)
 - **Persistent data storage using browser's localStorage**
 
 ## **Installation**
@@ -66,6 +66,8 @@ A simple and efficient Pomodoro-based task management app built with React. This
 ## **Contributing**
 
 Feel free to fork this repository and submit pull requests for any features or bug fixes!
+
+
 
 ## **License**
 
