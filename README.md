@@ -1,4 +1,4 @@
-# **Advanced Todo List App**
+# **ZenTask**
 
 A feature-rich and advanced task management application built with React, tailored for productivity enthusiasts. This app goes beyond basic todo functionality, offering a comprehensive suite of tools including AI-powered suggestions, voice commands, analytics, and gamification elements.
 
